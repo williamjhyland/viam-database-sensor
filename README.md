@@ -15,6 +15,7 @@ The sensor requires database credentials to establish a connection with the MySQ
 
 Provide the necessary credentials and configurations for the database connection in your project's configuration file.
 
+Generic Example
 ```json
 {
   "host": "YOUR DATABASE HOST",
@@ -24,6 +25,7 @@ Provide the necessary credentials and configurations for the database connection
   "query": "YOUR SQL QUERY"
 }
 ```
+Generalized Example
 ```json
 {
   "host": "localhost",
@@ -55,10 +57,10 @@ For more information about MySQL and Python integration, visit:
 [MySQL Connector/Python Developer Guide](https://dev.mysql.com/doc/connector-python/en/)
 
 ## Testing Connections
-## 1. Clone this repository
-## 2. Create the "credentials.json" File
-#### Create a new JSON file named "credentials.json" in the repository you just cloned.
-#### Copy and paste the following JSON structure into "credentials.json" and update it with your database credentials and queries:
+1. Clone this repository
+2. Create the "credentials.json" File
+    * Create a new JSON file named "credentials.json" in the repository you just cloned.
+    * Copy and paste the following JSON structure into "credentials.json" and update it with your database credentials and queries:
 ### Example "credentials.json" file
 ```json
 {
@@ -77,8 +79,8 @@ For more information about MySQL and Python integration, visit:
   ]
 }
 ```
-## 3. Testing the Database Connection
-#### Build the virtual environment.
-#### Run the script.
-#### After testing the database connection and queries in the "main" function, you can proceed to create your sensor class and integrate it with the Viam framework. You can use the host, user, password, and database_name variables to establish a database connection using the MySQL connector library.
+3. Testing the Database Connection
+    * Build the virtual environment.
+    * Run the script.
+    * After testing the database connection and queries in the "main" function, you can proceed to create your sensor class and integrate it with the Viam framework. You can use the host, user, password, and database_name variables to establish a database connection using the MySQL connector library.
 
