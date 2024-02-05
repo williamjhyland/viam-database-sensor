@@ -82,6 +82,8 @@ class MySensor(Sensor):
         for key in credential_keys:
             if key in attributes_dict:
                 setattr(self, key, attributes_dict[key])
+        LOGGER.info("%s is reconfiguring...", self.name)
+
 
     async def close(self):
         """
@@ -111,6 +113,7 @@ class MySensor(Sensor):
         This method now runs a database query and returns the results.
         """
         # Ensure that all necessary credentials are available
+        LOGGER.info("Credentials provided is %s", all(hasattr(self, attr) for attr in ['host', 'user', 'password', 'database', 'query']))
         if all(hasattr(self, attr) for attr in ['host', 'user', 'password', 'database', 'query']):
             # Run the query using the credentials
             result = await self.run_query(
@@ -120,8 +123,9 @@ class MySensor(Sensor):
                 database=self.database,
                 query=self.query
             )
-            # Return the result of the query
-            return {"query_result": result}
+            # Process the result as needed to fit the structure of sensor readings
+            readings = self.process_readings(result)
+            return readings
         else:
             # Handle the case where some credentials are missing
             return {"error": "Database credentials are incomplete or missing"}
@@ -151,16 +155,32 @@ class MySensor(Sensor):
         # Fetch all the rows
         rows = cursor.fetchall()
 
-        for row in rows:
-            print(row)
-
         # Close the connection
         cursor.close()
         conn.close()
         return rows
         
+    def process_readings(self, query_result) -> Dict[str, Any]:
+        """
+        Process the raw query result into a structured format for sensor readings.
+        """
+        # Example processing (you should replace this with actual processing logic)
+        readings = {}
+        for row in query_result:
+
+            # Assuming each row is a dictionary with keys corresponding to sensor data fields
+            readings[str(row[0])] = {
+                "name": row[1],
+                "age": row[2],
+                "city": row[3],
+            }
+        print(readings)
+        return readings
+
 
 async def main():
+    return []
+
     # Create an instance of MySensor
     sensor = MySensor("test_sensor")
 
