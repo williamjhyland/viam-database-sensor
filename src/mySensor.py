@@ -160,19 +160,12 @@ class MySensor(Sensor):
         return rows
         
 
-# Register this model with the module.
-Registry.register_resource_creator(
-    Sensor.SUBTYPE,
-    MySensor.MODEL,
-    ResourceCreatorRegistration(MySensor.new, MySensor.validate_config),
-)
-
 async def main():
     # Create an instance of MySensor
     sensor = MySensor("test_sensor")
 
     # Load credentials from the JSON file
-    with open("../credentials.json", "r") as json_file:
+    with open("./credentials.json", "r") as json_file:
         credentials = json.load(json_file)
 
     # Database credentials
