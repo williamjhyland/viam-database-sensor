@@ -42,7 +42,7 @@ class MySensor(Sensor):
         attributes_dict = struct_to_dict(config.attributes)
         """Validates JSON configuration"""
         
-        required_attributes = ["host", "user", "password", "database_name", "query"]
+        required_attributes = ["host", "user", "password", "database", "table", "query"]
 
         for attribute in required_attributes:
             if attribute not in attributes_dict or not attributes_dict[attribute].string_value.strip():
@@ -67,7 +67,6 @@ class MySensor(Sensor):
         Actual component instance constructor
         """
         super().__init__(name)
-        self.multiplier = 1.0
 
     def reconfigure(
         self, config: ComponentConfig, dependencies: Mapping[ResourceName, ResourceBase]
