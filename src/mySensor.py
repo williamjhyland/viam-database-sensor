@@ -18,6 +18,8 @@ from viam.utils import ValueTypes, struct_to_dict
 
 import mysql.connector
 import asyncio
+import os
+import json
 
 # Activate the logger to send log entries to app.viam.com, visible under the logs tab
 LOGGER = getLogger(__name__)
@@ -76,7 +78,7 @@ class MySensor(Sensor):
         """
         attributes_dict = struct_to_dict(config.attributes)
         # Define the keys for the database credentials
-        credential_keys = ["host", "user", "password", "database", "query"]
+        credential_keys = ["host", "user", "password", "database", "table", "query"]
 
         # Iterate over the credential keys and set them as attributes of 'self'
         for key in credential_keys:
@@ -113,18 +115,18 @@ class MySensor(Sensor):
         This method now runs a database query and returns the results.
         """
         # Ensure that all necessary credentials are available
-        LOGGER.info("Credentials provided is %s", all(hasattr(self, attr) for attr in ['host', 'user', 'password', 'database', 'query']))
-        if all(hasattr(self, attr) for attr in ['host', 'user', 'password', 'database', 'query']):
+        if all(hasattr(self, attr) for attr in ['host', 'user', 'password', 'database', 'table', 'query']):
             # Run the query using the credentials
-            result = await self.run_query(
+            primary_key, keys, result = await self.run_query(
                 host=self.host,
                 user=self.user,
                 password=self.password,
                 database=self.database,
+                table=self.table,
                 query=self.query
             )
             # Process the result as needed to fit the structure of sensor readings
-            readings = self.process_readings(result)
+            readings = self.process_readings(primary_key, keys, result)
             return readings
         else:
             # Handle the case where some credentials are missing
@@ -136,6 +138,7 @@ class MySensor(Sensor):
         user: str,
         password: str,
         database: str,
+        table: str,
         query: str
     ) -> Mapping[str, Any]:
         # Establish a database connection
@@ -149,50 +152,73 @@ class MySensor(Sensor):
         # Create a cursor object
         cursor = conn.cursor()
 
-        # Query the table
-        cursor.execute(query)
 
+        # Query to get the primary key column name of the specified table
+        primary_key_query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = '{database}' AND TABLE_NAME = '{table}' AND CONSTRAINT_NAME = 'PRIMARY'"
+        table_keys_query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '{database}' AND TABLE_NAME = '{table}'"
+
+        # Get Primary Key
+        # Execute the query
+        cursor.execute(primary_key_query)
+        # Fetch the result
+        primary_key = cursor.fetchone()
+
+        # Get All Keys
+        # Execute the query
+        cursor.execute(table_keys_query)
+        # Fetch the result
+        all_keys = cursor.fetchall()
+
+        # Run Main Query
+        # Execute the query
+        cursor.execute(query)
         # Fetch all the rows
         rows = cursor.fetchall()
 
         # Close the connection
         cursor.close()
         conn.close()
-        return rows
+
+        # Return each
+        return primary_key[0], [key[0] for key in all_keys], rows
         
-    def process_readings(self, query_result) -> Dict[str, Any]:
+    def process_readings(self, primary_key, keys, query_result) -> Dict[str, Any]:
         """
         Process the raw query result into a structured format for sensor readings.
         """
-        # Example processing (you should replace this with actual processing logic)
         readings = {}
-        for row in query_result:
+        key_index = keys.index(primary_key)
 
-            # Assuming each row is a dictionary with keys corresponding to sensor data fields
-            readings[str(row[0])] = {
-                "name": row[1],
-                "age": row[2],
-                "city": row[3],
-            }
-        print(readings)
+        for row in query_result:
+            # Create a dictionary for the current row, excluding the primary key
+            row_data = {keys[i]: row[i] for i in range(len(row)) if i != key_index}
+
+            # Use the value at the key_index as the key in the readings dictionary
+            readings[str(row[key_index])] = row_data
+
         return readings
 
 
 async def main():
-    return []
+    credentials_file = "./credentials.json"
+
+    # Check if the credentials file exists
+    if not os.path.exists(credentials_file):
+        return
+    
+    # Load credentials from the JSON file
+    with open(credentials_file, "r") as json_file:
+        credentials = json.load(json_file)
 
     # Create an instance of MySensor
     sensor = MySensor("test_sensor")
-
-    # Load credentials from the JSON file
-    with open("./credentials.json", "r") as json_file:
-        credentials = json.load(json_file)
 
     # Database credentials
     host = credentials["database"]["host"]
     user = credentials["database"]["user"]
     password = credentials["database"]["password"]
     database_name = credentials["database"]["database_name"]
+    table_name = credentials["database"]["table_name"]
 
     # List of queries
     queries = credentials["queries"]
@@ -202,12 +228,13 @@ async def main():
     print("Database Host:", host)
     print("Database User:", user)
     print("Database Name:", database_name)
+    print("Table Name:", table_name)
     print("Queries:")
     for query in queries:
         print("------------------------------")
         print("Query: ", query)
         print("------------------------------")
-        result = await sensor.run_query(host, user, password, database_name, query)
+        result = await sensor.run_query(host, user, password, database_name, table_name, query)
         print("***** PRESENTED RESULT *****")
         print(result)
         print("------------------------------")

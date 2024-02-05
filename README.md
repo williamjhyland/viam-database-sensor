@@ -84,3 +84,38 @@ For more information about MySQL and Python integration, visit:
     * Run the script.
     * After testing the database connection and queries in the "main" function, you can proceed to create your sensor class and integrate it with the Viam framework. You can use the host, user, password, and database_name variables to establish a database connection using the MySQL connector library.
 
+## Future Efforts:
+Add libraries to manage other common database vendors like PostgreSQL, SQLite, MongoDB, MariaDB...
+
+Construct a SQL query from attributes provided in the configuration
+```sql
+SELECT column1, column2, ...
+FROM table_name
+JOIN another_table ON table_name.column = another_table.column
+WHERE condition
+GROUP BY column
+HAVING condition
+ORDER BY column ASC/DESC
+LIMIT number;
+```
+
+could be represented as...
+
+```json
+{
+    "select": ["column1", "column2"],
+    "from": "table_name",
+    "join": {
+        "table": "another_table",
+        "on": "table_name.column = another_table.column"
+    },
+    "where": "condition",
+    "groupBy": ["column"],
+    "having": "condition",
+    "orderBy": {
+        "column": "column",
+        "order": "ASC"  // or "DESC"
+    },
+    "limit": "number"
+}
+```
