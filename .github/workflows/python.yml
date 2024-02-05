@@ -45,7 +45,7 @@ jobs:
 
     - name: Build/Package
       run: |
-        tar -czf database-sensor-${{ env.os }}-${{ env.GOARCH }}.tar.gz run.sh requirements.txt src # Change 'your-python-project' as needed
+        tar -czf database-sensor-${{ env.os }}-${{ env.GOARCH }}.tar.gz run.sh requirements.txt src/  # Replace with your build command
 
     - uses: actions/upload-artifact@v3
       with:
@@ -71,10 +71,14 @@ jobs:
 
     - uses: actions/download-artifact@v3
       with:
-        name: your-python-project-${{ matrix.runner }}
+        name: database-sensor-${{ env.os }}-${{ env.GOARCH }}
       
     - name: Upload
       uses: viamrobotics/upload-module@main
       with:
-        module-path: your-python-project.tar.gz
-        # Add other necessary fields as per your requirement
+        module-path: viam-docker-manager-${{ env.os }}-${{ env.GOARCH }}.tar.gz
+        platform: ${{ env.GOOS }}/${{ env.GOARCH }}
+        org-id: ${{ secrets.viam_org_id }}
+        version: ${{ github.event_name == 'release' && github.ref_name || format('0.0.0-{0}.{1}', github.ref_name, github.run_number) }} # <-- see 'Versioning' section below for explanation
+        key-id: ${{ secrets.viam_key_id }}
+        key-value: ${{ secrets.viam_key_value }}
