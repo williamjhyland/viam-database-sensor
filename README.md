@@ -4,6 +4,15 @@
 This project demonstrates the integration of a sensor component with a MySQL database, enabling the sensor to read data from the database given a query and data base connection information. You can find this module in the [Viam Registry]([https://app.viam.com/registry](https://app.viam.com/module/bill/viam-database-sensor))
 
 ## Configuration
+  * For this module you need to grant access to the MySQL user from the specific host or any host. 
+```sql
+CREATE USER 'user'@'host' IDENTIFIED BY 'password';
+```
+  * Grant privileges... be aware that this is less secure and should be done with caution.
+Execute a GRANT command:
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'host' WITH GRANT OPTION;
+````
 
 ### Attribute Guide:
 
@@ -32,6 +41,7 @@ Generalized Example
 ```
 ## Setup and Installation
   * Database Setup: Ensure that your MySQL database is running and accessible.
+    * 
   * Sensor Configuration: Configure your sensor component with the necessary database connection details.
 
 ## Usage
