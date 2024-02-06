@@ -1,13 +1,7 @@
 # MySQL Database Sensor Integration
 ## Description
 
-This is a module for Viam Robotics to manage docker containers, on your robot, with the RDK. You can find this module in the [Viam Registry](https://app.viam.com/registry)
-
-This project demonstrates the integration of a sensor component with a MySQL database, enabling the sensor to read data from the database and perform specific actions based on the retrieved data. This setup is ideal for applications requiring database interactions through sensor-based triggers.
-
-## Authentication and Database Connection
-
-The sensor requires database credentials to establish a connection with the MySQL database. Credentials are handled securely, and it's recommended to use environment variables or secure files for storing sensitive information like passwords.
+This project demonstrates the integration of a sensor component with a MySQL database, enabling the sensor to read data from the database given a query and data base connection information. You can find this module in the [Viam Registry]([https://app.viam.com/registry](https://app.viam.com/module/bill/viam-database-sensor))
 
 ## Configuration
 
@@ -32,18 +26,19 @@ Generalized Example
   "user": "root",
   "password": "example_password",
   "database": "sensor_data",
+  "table": "sensor_readings",
   "query": "SELECT * FROM sensor_readings"
 }
 ```
 ## Setup and Installation
-Database Setup: Ensure that your MySQL database is running and accessible.
-Sensor Configuration: Configure your sensor component with the necessary database connection details.
+  * Database Setup: Ensure that your MySQL database is running and accessible.
+  * Sensor Configuration: Configure your sensor component with the necessary database connection details.
 
 ## Usage
-Once the sensor is configured and the script is running, the sensor will periodically query the MySQL database using the provided SQL query.
+Once the sensor and data capture service is configured, the sensor will periodically query the MySQL database using the provided SQL query and upload the results of the query to the accounts Viam Cloud where it can be accessed broadly.
 
 1. [Configure a new Component](https://docs.viam.com/registry/configure/) in your robot using [app.viam.com](app.viam.com)
-2. Search for "MySQL" and click the "sensor/mysql:select-sensor" from "viam-soleng"
+2. Search for "mysql-select" and click the "sensor / db:mysql-select" from "bill"
 3. Click "Add module"
 4. Name the component (ex: `mysql-sensor`)
 5. Click "Create"
