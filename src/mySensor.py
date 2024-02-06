@@ -31,7 +31,7 @@ class MySensor(Sensor):
     Subclass the Viam Sensor component and implement the required functions
     """
 
-    MODEL: ClassVar[Model] = Model(ModelFamily("viam-soleng", "mysql"), "select-sensor")
+    MODEL: ClassVar[Model] = Model(ModelFamily("bill", "db"), "mysql-select")
 
     @classmethod
     def validate_config(cls, config: ComponentConfig) -> Sequence[str]:
