@@ -92,6 +92,7 @@ class MySensor(Sensor):
         is removed from the config or the module is shutting down.
         """
         LOGGER.info("%s is closed.", self.name)
+        LOGGER.
 
     async def do_command(
         self,

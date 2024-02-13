@@ -18,24 +18,30 @@ are_requirements_met() {
     done < requirements.txt
     return 0
 }
-
+echo "Starting run script..."
 # Create a virtual environment if it doesn't exist
 if [ ! -d "$VENV_NAME" ]; then
     echo "Creating virtual environment..."
 
-    # install pip and virtualenv if not installed
+    # check for pip, virtualenv and venv
     if ! command -v pip3 >/dev/null; then
-        sudo apt install -qqy python3-pip
+        echo "require python3-pip"
     fi
+    
     if ! command -v virtualenv >/dev/null; then
-        sudo pip3 install virtualenv
+        echo "require virtualenv"
     fi
 
+    if ! command -v venv >/dev/null; then
+        echo "require venv"
+    fi
     # create virtual environment
     if ! python3 -m venv --system-site-packages "$VENV_NAME"; then
         echo "Failed to create virtualenv."
         exit 1
     fi
+else
+    echo "Virtual environment exists..."
 fi
 
 # Activate virtual environment
