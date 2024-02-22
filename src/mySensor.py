@@ -190,8 +190,8 @@ class MySensor(Sensor):
         key_index = keys.index(primary_key)
 
         for row in query_result:
-            # Create a dictionary for the current row, excluding the primary key
-            row_data = {keys[i]: row[i] for i in range(len(row)) if i != key_index}
+            # Create a dictionary for the current row, casting all values to strings
+            row_data = {keys[i]: str(row[i]) for i in range(len(row)) if i != key_index}
 
             # Use the value at the key_index as the key in the readings dictionary
             readings[str(row[key_index])] = row_data
