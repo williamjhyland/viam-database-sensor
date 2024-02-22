@@ -188,6 +188,7 @@ class MySensor(Sensor):
         Process the raw query result into a structured format for sensor readings.
         """
         readings = {}
+        LOGGER.info(primary_key, keys)
         key_index = keys.index(primary_key)
 
         for row in query_result:
