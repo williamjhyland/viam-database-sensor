@@ -83,7 +83,7 @@ class MySensor(Sensor):
         for key in credential_keys:
             if key in attributes_dict:
                 setattr(self, key, attributes_dict[key])
-        LOGGER.info("%s is reconfiguring...", self.name)
+        LOGGER.debug("%s is reconfiguring...", self.name)
 
 
     async def close(self):
@@ -173,7 +173,6 @@ class MySensor(Sensor):
         cursor.execute(query)
         # Fetch all the rows
         all_keys = [column[0] for column in cursor.description]
-        LOGGER.info(all_keys)
         rows = cursor.fetchall()
 
         # Close the connection
@@ -188,7 +187,6 @@ class MySensor(Sensor):
         Process the raw query result into a structured format for sensor readings.
         """
         readings = {}
-        LOGGER.info(primary_key, keys)
         key_index = keys.index(primary_key)
 
         for row in query_result:
