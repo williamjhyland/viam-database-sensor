@@ -164,14 +164,15 @@ class MySensor(Sensor):
 
         # Get All Keys
         # Execute the query
-        cursor.execute(table_keys_query)
+        # cursor.execute(table_keys_query)
         # Fetch the result
-        all_keys = cursor.fetchall()
+        # all_keys = cursor.fetchall()
 
         # Run Main Query
         # Execute the query
         cursor.execute(query)
         # Fetch all the rows
+        all_keys = [column[0] for column in cursor.description]
         rows = cursor.fetchall()
 
         # Close the connection
