@@ -181,7 +181,7 @@ class MySensor(Sensor):
         conn.close()
 
         # Return each
-        return primary_key[0], [key[0] for key in all_keys], rows
+        return primary_key[0], [key for key in all_keys], rows
         
     def process_readings(self, primary_key, keys, query_result) -> Dict[str, Any]:
         """
