@@ -173,6 +173,7 @@ class MySensor(Sensor):
         cursor.execute(query)
         # Fetch all the rows
         all_keys = [column[0] for column in cursor.description]
+        LOGGER.info(all_keys)
         rows = cursor.fetchall()
 
         # Close the connection
