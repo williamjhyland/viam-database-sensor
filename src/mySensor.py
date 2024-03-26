@@ -8,11 +8,7 @@ from viam.resource.base import ResourceBase
 from viam.resource.types import Model, ModelFamily
 from viam.utils import struct_to_dict, from_dm_from_extra
 from viam.errors import NoCaptureToStoreError
-import mysql.connector
 from mysql.connector.aio import connect
-import asyncio
-import os
-import json
 
 LOGGER = getLogger(__name__)
 
@@ -54,8 +50,10 @@ class MySensor(Sensor):
             return {"error": "Database credentials are incomplete or missing"}
 
         if from_dm_from_extra(extra) and 'filter_query' in self.queries and 'action_query' in self.queries:
-            results = await self.run_query(self.queries.get('filter_query'))            
-            await self.run_query(self.queries.get('action_query'))       
+            results = await self.run_query(self.queries.get('filter_query'))
+            if not results:
+                raise NoCaptureToStoreError
+            await self.run_query(self.queries.get('action_query'))
             return results
         else:
             return await self.run_query(self.queries.get('default_query'))  
