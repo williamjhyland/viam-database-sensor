@@ -1,7 +1,7 @@
 # MySQL Database Sensor Integration
 ## Description
 
-This project demonstrates the integration of a sensor component with a MySQL database, enabling the sensor to read data from the database given a query and data base connection information. You can find this module in the [Viam Registry]([https://app.viam.com/registry](https://app.viam.com/module/bill/viam-database-sensor))
+This project demonstrates the integration of a sensor component with a MySQL database, enabling the sensor to read data from the database given a query and data base connection information. This integration allows for advanced data capture scenarios where sensor readings can trigger additional actions, such as updating database records. You can find this module in the [Viam Registry]([https://app.viam.com/registry](https://app.viam.com/module/bill/viam-database-sensor))
 
 ## Configuration
   * For this module you need to grant access to the MySQL user from the specific host or any host. 
@@ -68,67 +68,3 @@ Modify the SQL query based on your specific data retrieval needs.
 For more information about MySQL and Python integration, visit:
 
 [MySQL Connector/Python Developer Guide](https://dev.mysql.com/doc/connector-python/en/)
-
-## Testing Connections
-1. Clone this repository
-2. Create the "credentials.json" File
-    * Create a new JSON file named "credentials.json" in the repository you just cloned.
-    * Copy and paste the following JSON structure into "credentials.json" and update it with your database credentials and queries:
-### Example "credentials.json" file
-```json
-{
-  "database": {
-    "host": "localhost",
-    "user": "root",
-    "password": "your_mysql_password",
-    "database_name": "your_database_name"
-  },
-  "queries": [
-    "SELECT * FROM test_table",
-    "SELECT name, age FROM test_table",
-    "SELECT * FROM test_table WHERE age > 25",
-    "SELECT * FROM test_table ORDER BY age DESC",
-    "SELECT * FROM test_table LIMIT 5"
-  ]
-}
-```
-3. Testing the Database Connection
-    * Build the virtual environment.
-    * Run the script.
-    * After testing the database connection and queries in the "main" function, you can proceed to create your sensor class and integrate it with the Viam framework. You can use the host, user, password, and database_name variables to establish a database connection using the MySQL connector library.
-
-## Future Efforts:
-Add libraries to manage other common database vendors like PostgreSQL, SQLite, MongoDB, MariaDB...
-
-Construct a SQL query from attributes provided in the configuration
-```sql
-SELECT column1, column2, ...
-FROM table_name
-JOIN another_table ON table_name.column = another_table.column
-WHERE condition
-GROUP BY column
-HAVING condition
-ORDER BY column ASC/DESC
-LIMIT number;
-```
-
-could be represented as...
-
-```json
-{
-    "select": ["column1", "column2"],
-    "from": "table_name",
-    "join": {
-        "table": "another_table",
-        "on": "table_name.column = another_table.column"
-    },
-    "where": "condition",
-    "groupBy": ["column"],
-    "having": "condition",
-    "orderBy": {
-        "column": "column",
-        "order": "ASC"  // or "DESC"
-    },
-    "limit": "number"
-}
-```
