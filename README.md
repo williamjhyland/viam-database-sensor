@@ -21,11 +21,15 @@ Provide the necessary credentials and configurations for the database connection
 Generic Example
 ```json
 {
-  "host": "YOUR DATABASE HOST",
-  "user": "YOUR DATABASE USER",
-  "password": "YOUR DATABASE PASSWORD",
-  "database": "YOUR DATABASE NAME",
-  "query": "YOUR SQL QUERY"
+  [REQUIRED] "host": "YOUR DATABASE HOST",
+  [REQUIRED] "user": "YOUR DATABASE USER",
+  [REQUIRED] "password": "YOUR DATABASE PASSWORD",
+  [REQUIRED] "database": "YOUR DATABASE NAME",
+  [REQUIRED] "query": "YOUR SQL QUERY",
+  [OPTIONAL] "filtered-data-capture-parameters": {
+    "filter-query": "YOUR SQL QUERY",
+    "action-query": "YOUR SQL QUERY",
+  }
 }
 ```
 Generalized Example
@@ -36,7 +40,11 @@ Generalized Example
   "password": "example_password",
   "database": "sensor_data",
   "table": "sensor_readings",
-  "query": "SELECT * FROM sensor_readings"
+  "query": "SELECT * FROM sensor_readings",
+  "filtered-data-capture-parameters": {
+    "filter-query": "SELECT * FROM test_table WHERE Done = 1 AND Uploaded = 0 LIMIT 1;",
+    "action-query": "UPDATE test_table SET Uploaded = 1 WHERE Done = 1 AND Uploaded = 0 LIMIT 1;",
+  }
 }
 ```
 ## Setup and Installation
