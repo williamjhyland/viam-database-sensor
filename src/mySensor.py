@@ -23,10 +23,6 @@ class MySensor(Sensor):
     def new(
         cls, config: ComponentConfig, dependencies: Mapping[ResourceName, ResourceBase]
     ) -> Self:
-        """
-        This constructor instantiates a new "mysensor" component based upon the 
-        configuration added to the RDK.
-        """
         sensor = cls(config.name)
         sensor.reconfigure(config, dependencies)
         return sensor
@@ -57,11 +53,6 @@ class MySensor(Sensor):
             return results
         else:
             return await self.run_query(self.queries.get('default_query'))  
-
-    def determine_query(self, extra: Optional[Dict[str, Any]]) -> Optional[str]:
-        if from_dm_from_extra(extra) and 'filter_query' in self.queries and 'action_query' in self.queries:
-            return self.queries.get('filter_query')            
-        return self.queries.get('default_query')
 
     async def run_query(self, query: str) -> Dict[str, Any]:
         async with await connect(**self.database_config) as conn:
