@@ -21,29 +21,34 @@ Provide the necessary credentials and configurations for the database connection
 Generic Example
 ```json
 {
-  [REQUIRED] "host": "YOUR DATABASE HOST",
-  [REQUIRED] "user": "YOUR DATABASE USER",
-  [REQUIRED] "password": "YOUR DATABASE PASSWORD",
-  [REQUIRED] "database": "YOUR DATABASE NAME",
-  [REQUIRED] "query": "YOUR SQL QUERY",
-  [OPTIONAL] "filtered-data-capture-parameters": {
-    "filter-query": "YOUR SQL QUERY",
-    "action-query": "YOUR SQL QUERY",
+  [REQUIRED] "database_config": {
+  [REQUIRED] "database": "test_db",
+  [REQUIRED] "user": "test",
+  [REQUIRED] "password": "checkmate",
+  [REQUIRED] "host": "192.168.0.155"
+  },
+  [REQUIRED] "table": "test_table",
+  [REQUIRED] "queries": {
+    [OPTIONAL] "action_query": "UPDATE test_table SET Uploaded = 1 WHERE Done = 1 AND Uploaded = 0 LIMIT 1;",
+    [REQUIRED] "default_query": "SELECT * FROM test_table;",
+    [OPTIONAL] "filter_query": "SELECT * FROM test_table WHERE Done = 1 AND Uploaded = 0 LIMIT 1;"
   }
 }
 ```
 Generalized Example
 ```json
 {
-  "host": "localhost",
-  "user": "root",
-  "password": "example_password",
-  "database": "sensor_data",
-  "table": "sensor_readings",
-  "query": "SELECT * FROM sensor_readings",
-  "filtered-data-capture-parameters": {
-    "filter-query": "SELECT * FROM test_table WHERE Done = 1 AND Uploaded = 0 LIMIT 1;",
-    "action-query": "UPDATE test_table SET Uploaded = 1 WHERE Done = 1 AND Uploaded = 0 LIMIT 1;",
+    "database_config": {
+    "database": "test_db",
+    "user": "test",
+    "password": "checkmate",
+    "host": "192.168.0.155"
+  },
+  "table": "test_table",
+  "queries": {
+    "action_query": "UPDATE test_table SET Uploaded = 1 WHERE Done = 1 AND Uploaded = 0 LIMIT 1;",
+    "default_query": "SELECT * FROM test_table;",
+    "filter_query": "SELECT * FROM test_table WHERE Done = 1 AND Uploaded = 0 LIMIT 1;"
   }
 }
 ```
