@@ -1,7 +1,7 @@
 # MySQL Database Sensor Integration
 ## Description
 
-This project demonstrates the integration of a sensor component with a MySQL database, enabling the sensor to read data from the database given a query and data base connection information. his integration allows for advanced data capture scenarios where sensor readings can trigger additional actions, such as updating database records. You can find this module in the [Viam Registry]([https://app.viam.com/registry](https://app.viam.com/module/bill/viam-database-sensor))
+This project demonstrates the integration of a sensor component with a MySQL database, enabling the sensor to read data from the database given a query and data base connection information. This integration allows for advanced data capture scenarios where sensor readings can trigger additional actions, such as updating database records. You can find this module in the [Viam Registry]([https://app.viam.com/registry](https://app.viam.com/module/bill/viam-database-sensor))
 
 ## Configuration
   * For this module you need to grant access to the MySQL user from the specific host or any host. 
