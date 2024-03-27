@@ -22,16 +22,16 @@ Generic Example
 ```json
 {
   [REQUIRED] "database_config": {
-  [REQUIRED] "database": "test_db",
-  [REQUIRED] "user": "test",
-  [REQUIRED] "password": "checkmate",
-  [REQUIRED] "host": "192.168.0.155"
+  [REQUIRED] "database": "DATABASE HERE",
+  [REQUIRED] "user": "USER HERE",
+  [REQUIRED] "password": "PASSWORD HERE",
+  [REQUIRED] "host": "HOST HERE"
   },
-  [REQUIRED] "table": "test_table",
+  [REQUIRED] "table": "TABLE HERE",
   [REQUIRED] "queries": {
-    [OPTIONAL] "action_query": "UPDATE test_table SET Uploaded = 1 WHERE Done = 1 AND Uploaded = 0 LIMIT 1;",
-    [REQUIRED] "default_query": "SELECT * FROM test_table;",
-    [OPTIONAL] "filter_query": "SELECT * FROM test_table WHERE Done = 1 AND Uploaded = 0 LIMIT 1;"
+    [OPTIONAL] "action_query": "QUERY HERE",
+    [REQUIRED] "default_query": "QUERY HERE",
+    [OPTIONAL] "filter_query": "QUERY HERE"
   }
 }
 ```
@@ -40,8 +40,8 @@ Generalized Example
 {
     "database_config": {
     "database": "test_db",
-    "user": "test",
-    "password": "checkmate",
+    "user": "user",
+    "password": "password",
     "host": "192.168.0.155"
   },
   "table": "test_table",
